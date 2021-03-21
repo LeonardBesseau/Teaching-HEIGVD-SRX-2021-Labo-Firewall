@@ -115,26 +115,43 @@ Pour établir la table de filtrage, voici les **conditions à respecter** dans l
   <li>En suivant la méthodologie vue en classe, établir la table de filtrage avec précision en spécifiant la source et la destination, le type de trafic (TCP/UDP/ICMP/any), les ports sources et destinations ainsi que l'action désirée (<b>Accept</b> ou <b>Drop</b>, éventuellement <b>Reject</b>).
   </li>                                  
 </ol>
-
 _Pour l'autorisation d'accès (**Accept**), il s'agit d'être le plus précis possible lors de la définition de la source et la destination : si l'accès ne concerne qu'une seule machine (ou un groupe), il faut préciser son adresse IP ou son nom (si vous ne pouvez pas encore la déterminer), et non la zone. 
 Appliquer le principe inverse (être le plus large possible) lorsqu'il faut refuser (**Drop**) une connexion._
 
-_Lors de la définition d'une zone, spécifier l'adresse du sous-réseau IP avec son masque (par exemple, "/24" correspond à 255.255.255.0) ou l'interface réseau (par exemple : "interface WAN") si l'adresse du sous-réseau ne peut pas être déterminé avec précision._
+_Lors de la définition d'une zone, spécifier l'adresse du sous-réseau IP avec son masque (par exemple, "/24" correspond à 255.255.255.0) ou l'interface réseau (par exemple : "interface WAN") si l'adresse du sous-réseau ne peut pas être déterminé avec précision.-	192.168.200.0/24	TCP/UDP	-	-	drop_
 
 ---
 
 **LIVRABLE : Remplir le tableau**
 
-| Adresse IP source | Adresse IP destination | Type | Port src | Port dst | Action |
-| :---:             | :---:                  | :---:| :------: | :------: | :----: |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
-|                   |                        |      |          |          |        |
-
+| Adresse IP source | Adresse IP destination |  Type   | Port src | Port dst | Action |
+| :---------------: | :--------------------: | :-----: | :------: | :------: | :----: |
+| 192.168.100.0/24  |          WAN           | UDP/TCP |    -     |    53    | accept |
+|        WAN        |    192.168.100.0/24    | UDP/TCP |    53    |    -     | accept |
+| 192.168.100.0/24  |          WAN           | ICMP-8  |          |          | accept |
+|        WAN        |    192.168.100.0/24    | ICMP-0  |          |          | accept |
+| 192.168.100.0/24  |    192.168.200.0/24    | ICMP-8  |          |          | accept |
+| 192.168.200.0/24  |    192.168.100.0/24    | ICMP-0  |          |          | accept |
+| 192.168.200.0/24  |    192.168.100.0/24    | ICMP-8  |          |          | accept |
+| 192.168.100.0/24  |    192.168.200.0/24    | ICMP-0  |          |          | accept |
+| 192.168.100.0/24  |          WAN           |   TCP   |    -     |    80    | accept |
+|        WAN        |    192.168.100.0/24    |   TCP   |    80    |    -     | accept |
+| 192.168.100.0/24  |          WAN           |   TCP   |    -     |   8080   | accept |
+|        WAN        |    192.168.100.0/24    |   TCP   |   8080   |    -     | accept |
+| 192.168.100.0/24  |          WAN           |   TCP   |    -     |   443    | accept |
+|        WAN        |    192.168.100.0/24    |   TCP   |   443    |    -     | accept |
+|        WAN        |     192.168.200.3      |   TCP   |    -     |    80    | accept |
+|   192.168.200.3   |          WAN           |   TCP   |    80    |    -     | accept |
+| 192.168.100.0/24  |     192.168.200.3      |   TCP   |    -     |    80    | accept |
+|   192.168.200.3   |    192.168.100.0/24    |   TCP   |    80    |    -     | accept |
+|   192.168.100.3   |     192.168.200.3      |   TCP   |    -     |    22    | accept |
+|   192.168.200.3   |     192.168.100.3      |   TCP   |    22    |    -     | accept |
+|   192.168.100.3   |     192.168.100.2      |   TCP   |    -     |    22    | accept |
+|   192.168.100.2   |     192.168.100.3      |   TCP   |    22    |    -     | accept |
+|         -         |    192.168.100.0/24    | TCP/UDP |    -     |    -     |  drop  |
+|         -         |    192.168.200.0/24    | TCP/UDP |    -     |    -     |  drop  |
+| 192.168.100.0/24  |           -            | TCP/UDP |    -     |    -     |  drop  |
+| 192.168.200.0/24  |           -            | TCP/UDP |    -     |    -     |  drop  |
 ---
 
 # Installation de l’environnement virtualisé
@@ -213,6 +230,8 @@ ping 192.168.200.3
 
 **LIVRABLE : capture d'écran de votre tentative de ping.**  
 
+![image-20210318154538199](/home/miguel/.config/Typora/typora-user-images/image-20210318154538199.png)
+
 ---
 
 En effet, la communication entre les clients dans le LAN et les serveurs dans la DMZ doit passer à travers le Firewall. Dans certaines configuration, il est probable que le ping arrive à passer par le bridge par défaut. Ceci est une limitation de Docker. **Si votre ping passe**, vous pouvez accompagner votre capture du ping avec une capture d'une commande traceroute qui montre que le ping ne passe pas actuellement par le Firewall mais qu'il a emprunté un autre chemin.
@@ -252,6 +271,18 @@ ping 192.168.100.3
 
 **LIVRABLES : captures d'écran des routes des deux machines et de votre nouvelle tentative de ping.**
 
+client :
+
+![image-20210318155201080](/home/miguel/.config/Typora/typora-user-images/image-20210318155201080.png)
+
+serveur :
+
+![image-20210318155303689](/home/miguel/.config/Typora/typora-user-images/image-20210318155303689.png)
+
+ping serv -> client : 
+
+![image-20210318155345952](/home/miguel/.config/Typora/typora-user-images/image-20210318155345952.png)
+
 ---
 
 La communication est maintenant possible entre les deux machines. Pourtant, si vous essayez de communiquer depuis le client ou le serveur vers l'Internet, ça ne devrait pas encore fonctionner sans une manipulation supplémentaire au niveau du firewall ou sans un service de redirection ICMP. Vous pouvez le vérifier avec un ping depuis le client ou le serveur vers une adresse Internet. 
@@ -267,6 +298,8 @@ Si votre ping passe mais que la réponse contient un _Redirect Host_, ceci indiq
 ---
 
 **LIVRABLE : capture d'écran de votre ping vers l'Internet. Un ping qui ne passe pas ou des réponses containant des _Redirect Host_ sont acceptés.**
+
+![image-20210318155758631](/home/miguel/.config/Typora/typora-user-images/image-20210318155758631.png)
 
 ---
 
@@ -346,6 +379,20 @@ Commandes iptables :
 
 ```bash
 LIVRABLE : Commandes iptables
+
+iptables -P INPUT DROP 
+iptables -P OUTPUT DROP 
+iptables -P FORWARD DROP 
+
+iptables -A FORWARD -p icmp --icmp-type 8 -s 192.168.100.0/24 -d 192.168.200.0/24 -j ACCEPT
+iptables -A FORWARD -p icmp --icmp-type 0 -s 192.168.200.0/24 -d 192.168.100.0/24 -j ACCEPT
+
+iptables -A FORWARD -p icmp --icmp-type 8 -s 192.168.100.0/24 -o eth0 -j ACCEPT
+iptables -A FORWARD -p icmp --icmp-type 0 -i eth0 -d 192.168.100.0/24 -j ACCEPT
+
+iptables -A FORWARD -p icmp --icmp-type 8 -s 192.168.200.0/24 -d 192.168.100.0/24 -j ACCEPT
+iptables -A FORWARD -p icmp --icmp-type 0 -s 192.168.100.0/24 -d 192.168.200.0/24 -j ACCEPT
+
 ```
 ---
 
@@ -358,18 +405,29 @@ LIVRABLE : Commandes iptables
 
 ```bash
 ping 8.8.8.8
-``` 	            
+```
 Faire une capture du ping.
 
 Vérifiez aussi la route entre votre client et le service `8.8.8.8`. Elle devrait partir de votre client et traverser votre Firewall :
 
 ```bash
 traceroute 8.8.8.8
-``` 	            
+```
 
 
 ---
 **LIVRABLE : capture d'écran du traceroute et de votre ping vers l'Internet. Il ne devrait pas y avoir des _Redirect Host_ dans les réponses au ping !**
+
+ping : 
+
+![image-20210321174217682](/home/miguel/.config/Typora/typora-user-images/image-20210321174217682.png)
+
+
+
+Pour visualiser les informations, il faut modifier les policy OUTPUT/FORWARD du firewall à ACCEPT :
+![image-20210321181059974](/home/miguel/.config/Typora/typora-user-images/image-20210321181059974.png)
+
+Les policy sont ensuite remis à DROP.
 
 ---
 
@@ -379,20 +437,20 @@ traceroute 8.8.8.8
 </ol>
 
 
-| De Client\_in\_LAN à | OK/KO | Commentaires et explications |
-| :---                 | :---: | :---                         |
-| Interface DMZ du FW  |       |                              |
-| Interface LAN du FW  |       |                              |
-| Client LAN           |       |                              |
-| Serveur WAN          |       |                              |
+| De Client\_in\_LAN à | OK/KO | Commentaires et explications                         |
+| :------------------- | :---: | :--------------------------------------------------- |
+| Interface DMZ du FW  |  KO   | Car le firewall ne peut répondre (OUTPUT/INPUT DROP) |
+| Interface LAN du FW  |  KO   | same                                                 |
+| Client LAN           |  OK   | Les pings sont autorisé dans le même réseau          |
+| Serveur WAN          |  OK   | Autorisé precedemment                                |
 
 
-| De Server\_in\_DMZ à | OK/KO | Commentaires et explications |
-| :---                 | :---: | :---                         |
-| Interface DMZ du FW  |       |                              |
-| Interface LAN du FW  |       |                              |
-| Serveur DMZ          |       |                              |
-| Serveur WAN          |       |                              |
+| De Server\_in\_DMZ à | OK/KO | Commentaires et explications                                 |
+| :------------------- | :---: | :----------------------------------------------------------- |
+| Interface DMZ du FW  |  KO   | Car le firewall ne peut répondre (OUTPUT/INPUT DROP)         |
+| Interface LAN du FW  |  KO   | same                                                         |
+| Serveur DMZ          |  OK   | Autorisé dans le même réseau                                 |
+| Serveur WAN          |  KO   | Le firewall n'a pas autorisé le serveur à communiquer avec le WAN, la potique par défaut est DROP |
 
 
 ## Règles pour le protocole DNS
@@ -412,6 +470,8 @@ ping www.google.com
 
 **LIVRABLE : capture d'écran de votre ping.**
 
+ça marche mais ça ne devrait PAS !!!!!!!
+
 ---
 
 * Créer et appliquer la règle adéquate pour que la **condition 1 du cahier des charges** soit respectée.
@@ -422,6 +482,12 @@ Commandes iptables :
 
 ```bash
 LIVRABLE : Commandes iptables
+
+iptables -A FORWARD -p udp -s 192.168.100.0/24 -o eth0 --dport 53 -j ACCEPT
+iptables -A FORWARD -p tcp -s 192.168.100.0/24 -o eth0 --dport 53 -j ACCEPT
+
+iptables -A FORWARD -p udp -i eth0 -d 192.168.100.0/24 --sport 53 -j ACCEPT
+iptables -A FORWARD -p tcp -i eth0 -d 192.168.100.0/24 --sport 53 -j ACCEPT
 ```
 
 ---
@@ -435,6 +501,8 @@ LIVRABLE : Commandes iptables
 
 **LIVRABLE : capture d'écran de votre ping.**
 
+![image-20210321190005592](/home/miguel/.config/Typora/typora-user-images/image-20210321190005592.png)
+
 ---
 
 <ol type="a" start="6">
@@ -446,6 +514,8 @@ LIVRABLE : Commandes iptables
 **Réponse**
 
 **LIVRABLE : Votre réponse ici...**
+
+Il est spécifié que la résolution DNS n'a pas pu aboutir. (puisque bloqué par le firewall)
 
 ---
 
@@ -466,6 +536,14 @@ Commandes iptables :
 
 ```bash
 LIVRABLE : Commandes iptables
+
+iptables -A FORWARD -m conntrack --ctstate RELATED, ESTABLISHED -j ACCEPT
+iptables -A FORWARD -m conntrack --ctstate INVALID -j DROP
+
+iptables -A FORWARD -p tcp -s 192.168.200.0/24 -o eth0 --dport 80 -j ACCEPT
+iptables -A FORWARD -p tcp -s 192.168.100.0/24 -o eth0 --dport 8080 -j ACCEPT
+iptables -A FORWARD -p tcp -s 192.168.100.0/24 -o eth0 --dport 443 -j ACCEPT
+
 ```
 
 ---
@@ -478,6 +556,9 @@ Commandes iptables :
 
 ```bash
 LIVRABLE : Commandes iptables
+
+iptables -A FORWARD -p tcp -i eth0 -d 192.168.200.3 --dport 80 -j ACCEPT
+iptables -A FORWARD -p tcp -s 192.168.100.0/24 -d 192.168.200.3 --dport 80 -j ACCEPT
 ```
 ---
 
@@ -488,7 +569,7 @@ LIVRABLE : Commandes iptables
 
 ---
 
-**LIVRABLE : capture d'écran.**
+![image-20210321200322590](/home/miguel/.config/Typora/typora-user-images/image-20210321200322590.png)
 
 ---
 
@@ -505,7 +586,10 @@ Commandes iptables :
 ---
 
 ```bash
-LIVRABLE : Commandes iptables
+iptables -A FORWARD -p tcp -s 192.168.100.3 -d 192.168.200.3 --dport 22 -j ACCEPT
+
+iptables -A INPUT -p tcp -s 192.168.100.3 -d 192.168.100.2 --dport 22 -j ACCEPT
+iptables -A OUTPUT -p tcp -d 192.168.100.2 -d 192.168.100.3 --sport 22 -j ACCEPT
 ```
 
 ---
@@ -518,7 +602,7 @@ ssh root@192.168.200.3
 
 ---
 
-**LIVRABLE : capture d'écran de votre connexion ssh.**
+![image-20210321201639916](/home/miguel/.config/Typora/typora-user-images/image-20210321201639916.png)
 
 ---
 
@@ -530,7 +614,7 @@ ssh root@192.168.200.3
 ---
 **Réponse**
 
-**LIVRABLE : Votre réponse ici...**
+Pouvoir manipuler un serveur à distance de façon securisé.
 
 ---
 
@@ -538,12 +622,10 @@ ssh root@192.168.200.3
   <li>En général, à quoi faut-il particulièrement faire attention lors de l'écriture des règles du pare-feu pour ce type de connexion ? 
   </li>                                  
 </ol>
-
-
 ---
 **Réponse**
 
-**LIVRABLE : Votre réponse ici...**
+A bien filtrer les sources/destination pour ne pas permettre à tout le monde de pouvoir se connecter via ssh. (verrouiller tous les accès (ports / interfaces) susceptible de créer une faille)
 
 ---
 
@@ -558,6 +640,7 @@ A présent, vous devriez avoir le matériel nécessaire afin de reproduire la ta
 
 ---
 
-**LIVRABLE : capture d'écran avec toutes vos règles.**
+![image-20210321203232868](/home/miguel/.config/Typora/typora-user-images/image-20210321203232868.png)
 
 ---
+
