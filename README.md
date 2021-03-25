@@ -391,6 +391,11 @@ Commandes iptables :
   iptables -A FORWARD -p icmp --icmp-type 0 -s 192.168.100.0/24 -d 192.168.200.0/24 -j ACCEPT
   iptables -A FORWARD -p icmp --icmp-type 8 -s 192.168.100.0/24 -o eth0 -j ACCEPT
   iptables -A FORWARD -p icmp --icmp-type 0 -d 192.168.100.0/24 -i eth0 -j ACCEPT
+
+  # For number 8
+  iptables -P INPUT DROP 
+  iptables -P OUTPUT DROP 
+  iptables -P FORWARD DROP
 ```
 ---
 
@@ -558,7 +563,7 @@ iptables -A FORWARD -p tcp -s 192.168.200.3 -d 192.168.100.0/24 --sport 80 -j AC
 
 **LIVRABLE : capture d'écran.**
 
-![image-20210318225247989](/home/leonard/.config/Typora/typora-user-images/image-20210318225247989.png)
+![SRX_Wget_client_dmz](./figures/SRX_Wget_client_dmz.png)
 
 ---
 
@@ -593,7 +598,7 @@ ssh root@192.168.200.3
 
 **LIVRABLE : capture d'écran de votre connexion ssh.**
 
-![image-20210318231411701](/home/leonard/.config/Typora/typora-user-images/image-20210318231411701.png)
+![SRX_ssh_dmz](./figures/SRX_ssh_dmz.png)
 
 ---
 
@@ -640,3 +645,7 @@ A présent, vous devriez avoir le matériel nécessaire afin de reproduire la ta
 **LIVRABLE : capture d'écran avec toutes vos règles.**
 
 ---
+
+
+
+![SRX_final_screen](./figures/SRX_final_screen.png)
