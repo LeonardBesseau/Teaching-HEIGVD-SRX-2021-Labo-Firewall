@@ -584,8 +584,9 @@ Commandes iptables :
 ```bash
 iptables -A FORWARD -p tcp -s 192.168.200.3 -d 192.168.100.3 --sport 22 -j ACCEPT
 iptables -A FORWARD -p tcp -d 192.168.200.3 -s 192.168.100.3 --dport 22 -j ACCEPT
-iptables -A FORWARD -p tcp -d 192.168.100.2 -s 192.168.100.3 --dport 22 -j ACCEPT
-iptables -A FORWARD -p tcp -s 192.168.100.2 -d 192.168.100.3 --sport 22 -j ACCEPT
+iptables -A INPUT   -p tcp -s 192.168.100.3 --dport 22 -j ACCEPT
+iptables -A OUTPUT  -p tcp -d 192.168.100.3 --sport 22 -j ACCEPT
+
 ```
 
 ---
@@ -650,4 +651,4 @@ A présent, vous devriez avoir le matériel nécessaire afin de reproduire la ta
 
 
 
-![SRX_final_screen](./figures/SRX_final_screen.png)
+![SRX_final_screen](./figures/SRX_Final.png)
