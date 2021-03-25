@@ -296,11 +296,9 @@ Si votre ping passe mais que la réponse contient un _Redirect Host_, ceci indiq
 
 *Ping depuis le client*
 
-![image-20210318140031073](/home/leonard/.config/Typora/typora-user-images/image-20210318140031073.png)
+![SRX_PING_WAN_1](./figures/SRX_PING_WAN_1.png)
 
-*Ping depuis la dmz*
 
-![image-20210318140136944](/home/leonard/.config/Typora/typora-user-images/image-20210318140136944.png)
 
 ---
 
