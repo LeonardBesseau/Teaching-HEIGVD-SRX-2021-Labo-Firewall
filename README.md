@@ -470,6 +470,8 @@ ping www.google.com
 
 ![SRX_Ping_DNS_fail](./figures/SRX_Ping_DNS_fail.png)
 
+*Avec de grandes difficultés, nous avons réussi à bloquer les requêtes DNS.* 
+
 * Créer et appliquer la règle adéquate pour que la **condition 1 du cahier des charges** soit respectée.
 
 Commandes iptables :
