@@ -272,7 +272,7 @@ ping 192.168.100.3
 
 **LIVRABLE**
 
-
+![SRX_ping_config_dmz](./figures/SRX_ping_config_dmz.png)
 
 
 
