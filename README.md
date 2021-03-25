@@ -463,7 +463,7 @@ ping www.google.com
 
 **LIVRABLE : capture d'écran de votre ping.**
 
-![image-20210318215047513](/home/leonard/.config/Typora/typora-user-images/image-20210318215047513.png)
+![SRX_Ping_DNS_fail](./figures/SRX_Ping_DNS_fail.png)
 
 * Créer et appliquer la règle adéquate pour que la **condition 1 du cahier des charges** soit respectée.
 
@@ -489,7 +489,7 @@ Commandes iptables :
 
 **LIVRABLE : capture d'écran de votre ping.**
 
-![image-20210318222614722](/home/leonard/.config/Typora/typora-user-images/image-20210318222614722.png)
+![SRX_ping_succes](./figures/SRX_ping_succes.png)
 
 ---
 
