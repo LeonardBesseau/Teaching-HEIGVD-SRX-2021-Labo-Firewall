@@ -508,7 +508,7 @@ Commandes iptables :
 ---
 **Réponse**
 
-**LIVRABLE : Votre réponse ici...**
+**LIVRABLE : **
 
 Le ping n'a pas pu être effectué car la résolution du nom de domaine n'a pas pu aboutir car les requêtes DNS sont DROP par le firewall. Le ping n'ayant pas d'adresse à ping, il ne peut donc pas poursuivre et indique qu'une erreur est survenue. 
 
@@ -612,9 +612,9 @@ ssh root@192.168.200.3
 ---
 **Réponse**
 
-**LIVRABLE : Votre réponse ici...**
+**LIVRABLE :**
 
-ssh permet de gérer le serveur à distance. De plus, un serveur ne dispose pas d'interface graphique permettant de le gérer physiquement. ssh permet donc de résoudre ce problème.
+ssh permet de gérer le serveur à distance. De plus, un serveur ne dispose pas d'interface graphique permettant de le gérer physiquement. ssh permet donc de résoudre ce problème. De plus. le protocole est sécurisé contrairement à telnet.
 
 ---
 
@@ -627,7 +627,7 @@ ssh permet de gérer le serveur à distance. De plus, un serveur ne dispose pas 
 ---
 **Réponse**
 
-**LIVRABLE : Votre réponse ici...**
+**LIVRABLE : **
 
 A ne donner accès à personne qui ne devrait pas l'avoir
 
