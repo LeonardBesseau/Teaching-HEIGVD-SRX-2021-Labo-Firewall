@@ -270,13 +270,19 @@ ping 192.168.100.3
 
 ---
 
-**LIVRABLE**
+**LIVRABLES : captures d'écran des routes des deux machines et de votre nouvelle tentative de ping.**
+
+*Ping depuis la dmz vers le client*
 
 ![SRX_ping_config_dmz](./figures/SRX_ping_config_dmz.png)
 
+*Route du client*
 
+![SRX_route_1](./figures/SRX_route_1.png)
 
+*Route du serveur*
 
+![SRX_route-dmz](./figures/SRX_route-dmz.png)
 
 ---
 
@@ -410,9 +416,9 @@ traceroute 8.8.8.8
 ---
 **LIVRABLE : capture d'écran du traceroute et de votre ping vers l'Internet. Il ne devrait pas y avoir des _Redirect Host_ dans les réponses au ping !**
 
-![image-20210318191226533](/home/leonard/.config/Typora/typora-user-images/image-20210318191226533.png)
+![SRX_PING_Client_WAN_2](./figures/SRX_PING_Client_WAN_2.png)
 
-![image-20210318191334337](/home/leonard/.config/Typora/typora-user-images/image-20210318191334337.png)
+![image-20210318191334337](./figures/SRX_Traceroute.png)
 
 (Il a fallu mettre les policies OUTPUT et FORWARD à ACCEPT pour que le traceroute fonctionne).
 
