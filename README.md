@@ -627,7 +627,7 @@ ssh permet de gérer le serveur à distance. De plus, un serveur ne dispose pas 
 ---
 **Réponse**
 
-**LIVRABLE : **
+**LIVRABLE :**
 
 A ne donner accès à personne qui ne devrait pas l'avoir
 
