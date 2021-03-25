@@ -231,7 +231,7 @@ ping 192.168.200.3
 
 **LIVRABLE**
 
-![image-20210318135433082](/home/leonard/.config/Typora/typora-user-images/image-20210318135433082.png)
+![SRX_configbase_1](./figures/SRX_configbase_1.png)
 
 ---
 
@@ -272,9 +272,9 @@ ping 192.168.100.3
 
 **LIVRABLE**
 
-![image-20210318135911779](/home/leonard/.config/Typora/typora-user-images/image-20210318135911779.png)
 
-![image-20210318135934367](/home/leonard/.config/Typora/typora-user-images/image-20210318135934367.png)
+
+
 
 
 
@@ -589,6 +589,8 @@ ssh root@192.168.200.3
 
 **LIVRABLE : capture d'écran de votre connexion ssh.**
 
+![image-20210318231411701](/home/leonard/.config/Typora/typora-user-images/image-20210318231411701.png)
+
 ---
 
 <ol type="a" start="9">
@@ -600,6 +602,8 @@ ssh root@192.168.200.3
 **Réponse**
 
 **LIVRABLE : Votre réponse ici...**
+
+ssh permet de gérer le serveur à distance. De plus, un serveur ne dispose pas d'interface graphique permettant de le gérer physiquement. ssh permet donc de résoudre ce problème.
 
 ---
 
@@ -613,6 +617,8 @@ ssh root@192.168.200.3
 **Réponse**
 
 **LIVRABLE : Votre réponse ici...**
+
+A ne donner accès à personne qui ne devrait pas l'avoir
 
 ---
 
